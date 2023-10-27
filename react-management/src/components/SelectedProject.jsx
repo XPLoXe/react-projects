@@ -1,6 +1,6 @@
-import Tasks from "./Tasks";
+import Tasks from "./Tasks.jsx";
 
-export default function selectedProject({
+export default function SelectedProject({
   project,
   onDelete,
   onAddTask,
