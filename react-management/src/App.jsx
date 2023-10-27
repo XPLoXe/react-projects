@@ -59,7 +59,10 @@ function App() {
 
   return (
     <main className="flex h-screen gap-8 my-8">
-      <ProjectsSidebar onStartAddProject={handleStartAddProject} />
+      <ProjectsSidebar
+        onStartAddProject={handleStartAddProject}
+        projects={projectsState.projects}
+      />
       {content}
     </main>
   );
