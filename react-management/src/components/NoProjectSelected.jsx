@@ -2,7 +2,7 @@ import Button from "./Button";
 
 import noProjectImage from "../assets/no-projects.png";
 
-export default function NoProjectSelected() {
+export default function NoProjectSelected({ onStartAddProject }) {
   return (
     <div className="w-2/3 mt-16 text-center">
       <img
@@ -17,7 +17,7 @@ export default function NoProjectSelected() {
         Choose a project from the sidebar to get started.
       </p>
       <p className="mt-8">
-        <Button>Create new project</Button>
+        <Button onClick={onStartAddProject}>Create new project</Button>
       </p>
     </div>
   );
