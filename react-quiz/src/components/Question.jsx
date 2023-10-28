@@ -1,9 +1,9 @@
 import QuestionTimer from "./QuestionTimer.jsx";
 import Answers from "./Answers.jsx";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import QUESTIONS from "../questions.js";
 
-export default function Question({ index, onSelectedAnswer, onSkipAnswer }) {
+export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
   const [answer, setAnswer] = useState({
     selectedAnswer: "",
     isCorrect: null,
@@ -31,7 +31,7 @@ export default function Question({ index, onSelectedAnswer, onSkipAnswer }) {
       });
 
       setTimeout(() => {
-        onSelectedAnswer(answer);
+        onSelectAnswer(answer);
       }, 2000);
     }, 1000);
   }
