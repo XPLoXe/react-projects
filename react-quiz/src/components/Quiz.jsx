@@ -10,7 +10,7 @@ export default function Quiz() {
 
   const quizIsComplete = activeQuestionIndex === QUESTIONS.length;
 
-  const handleSelectAnswer = useCallback(function handleSelectedAnswer(
+  const handleSelectAnswer = useCallback(function handleSelectAnswer(
     selectedAnswer
   ) {
     setUserAnswers((prevUserAnswers) => {
@@ -49,7 +49,7 @@ export default function Quiz() {
             <li key={answer} className="answer">
               <button
                 onClick={() => {
-                  handleSelectedAnswer(answer);
+                  handleSelectAnswer(answer);
                 }}
               >
                 {answer}
