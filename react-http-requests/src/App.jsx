@@ -6,11 +6,13 @@ import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import logoImg from "./assets/logo.png";
 import AvailablePlaces from "./components/AvailablePlaces.jsx";
 import { updateUserPlaces } from "./http.js";
+import Error from "./components/Error.jsx";
 
 function App() {
   const selectedPlace = useRef();
 
   const [userPlaces, setUserPlaces] = useState([]);
+  const [errorUpdating, setErrorUpdating] = useState(null);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -36,7 +38,10 @@ function App() {
 
     try {
       await updateUserPlaces([selectedPlace, ...userPlaces]);
-    } catch (error) {}
+    } catch (error) {
+      setUserPlaces(userPlaces);
+      setErrorUpdating({ message: error.message || "Something went wrong!" });
+    }
   }
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
@@ -47,8 +52,21 @@ function App() {
     setModalIsOpen(false);
   }, []);
 
+  function handleError() {
+    setErrorUpdating(null);
+  }
+
   return (
     <>
+      <Modal open={errorUpdating} onClose={handleError}>
+        {errorUpdating && (
+          <Error
+            title="An error occurred!"
+            onConfirm={handleError}
+            message={errorUpdating.message}
+          />
+        )}
+      </Modal>
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
