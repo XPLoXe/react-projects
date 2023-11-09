@@ -1,20 +1,40 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 
 import Places from "./components/Places.jsx";
 import Modal from "./components/Modal.jsx";
 import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import logoImg from "./assets/logo.png";
 import AvailablePlaces from "./components/AvailablePlaces.jsx";
-import { updateUserPlaces } from "./http.js";
+import { updateUserPlaces, fetchUserPlaces } from "./http.js";
 import Error from "./components/Error.jsx";
 
 function App() {
   const selectedPlace = useRef();
 
   const [userPlaces, setUserPlaces] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const [errorUpdating, setErrorUpdating] = useState(null);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  useEffect(() => {
+    //async/await user places fetch
+    async function fetchUserPlacesHandler() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const places = await fetchUserPlaces();
+        setUserPlaces(places);
+      } catch (error) {
+        setError({ message: error.message || "Failed to fetch user places." });
+      }
+      setIsLoading(false);
+    }
+
+    fetchUserPlacesHandler();
+  }, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -99,6 +119,8 @@ function App() {
         </p>
       </header>
       <main>
+        {isLoading && <p className="fallback-text">Loading...</p>}
+        {error && <Error title="An error ocurred!" message={error.message} />}
         <Places
           title="I'd like to visit ..."
           fallbackText="Select the places you would like to visit below."
