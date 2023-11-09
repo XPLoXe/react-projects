@@ -1,5 +1,6 @@
 import Places from "./Places.jsx";
 import { useState, useEffect } from "react";
+import Error from "./Error.jsx";
 
 export default function AvailablePlaces({ onSelectPlace }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -13,13 +14,13 @@ export default function AvailablePlaces({ onSelectPlace }) {
       setError(null);
       try {
         const response = await fetch("http://localhost:3000/places");
+        const data = await response.json();
         if (!response.ok) {
           throw new Error("Failed to fetch.");
         }
-        const data = await response.json();
         setAvailablePlaces(data.places);
       } catch (error) {
-        setError(error.message);
+        setError({ message: error.message || "Something went wrong!" });
       }
       setIsLoading(false);
     }
@@ -63,11 +64,7 @@ export default function AvailablePlaces({ onSelectPlace }) {
   }
 
   if (error) {
-    return (
-      <section>
-        <p>{error}</p>
-      </section>
-    );
+    return <Error title="An error ocurred!" message={error.message} />;
   }
 
   if (availablePlaces.length === 0) {
