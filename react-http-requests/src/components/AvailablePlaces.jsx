@@ -57,7 +57,7 @@ export default function AvailablePlaces({ onSelectPlace }) {
   if (isLoading) {
     return (
       <section>
-        <p>Loading...</p>
+        <p className="fallback-text">Loading...</p>
       </section>
     );
   }
