@@ -7,32 +7,51 @@ export default function AvailablePlaces({ onSelectPlace }) {
   const [availablePlaces, setAvailablePlaces] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-
-    fetch("http://localhost:3000/places")
-      .then((response) => {
+    // SOLUTION 1: Using async/await
+    async function fetchPlaces() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("http://localhost:3000/places");
         if (!response.ok) {
           throw new Error("Failed to fetch.");
         }
-
-        return response.json();
-      })
-      .then((data) => {
-        // const transformedPlaces = data.map((place) => ({
-        //   id: place.alpha3Code,
-        //   name: place.name,
-        //   image: place.flag,
-        // }));
-
+        const data = await response.json();
         setAvailablePlaces(data.places);
-      })
-      .catch((error) => {
+      } catch (error) {
         setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      }
+      setIsLoading(false);
+    }
+
+    fetchPlaces();
+
+    // SOLUTION 2: Using fetch() and then()
+    // setIsLoading(true);
+    // setError(null);
+    // fetch("http://localhost:3000/places")
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch.");
+    //     }
+
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     // const transformedPlaces = data.map((place) => ({
+    //     //   id: place.alpha3Code,
+    //     //   name: place.name,
+    //     //   image: place.flag,
+    //     // }));
+
+    //     setAvailablePlaces(data.places);
+    //   })
+    //   .catch((error) => {
+    //     setError(error.message);
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //   });
   }, []);
 
   if (isLoading) {
