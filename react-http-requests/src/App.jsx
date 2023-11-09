@@ -7,34 +7,21 @@ import logoImg from "./assets/logo.png";
 import AvailablePlaces from "./components/AvailablePlaces.jsx";
 import { updateUserPlaces, fetchUserPlaces } from "./http.js";
 import Error from "./components/Error.jsx";
+import { useFetch } from "./hooks/useFetch.js";
 
 function App() {
   const selectedPlace = useRef();
-
-  const [userPlaces, setUserPlaces] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [errorUpdating, setErrorUpdating] = useState(null);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  useEffect(() => {
-    //async/await user places fetch
-    async function fetchUserPlacesHandler() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const places = await fetchUserPlaces();
-        setUserPlaces(places);
-      } catch (error) {
-        setError({ message: error.message || "Failed to fetch user places." });
-      }
-      setIsLoading(false);
-    }
-
-    fetchUserPlacesHandler();
-  }, []);
+  const {
+    isFetching,
+    error,
+    fetchedData: userPlaces,
+    setFetchedData: setUserPlaces,
+  } = useFetch(fetchUserPlaces, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -85,7 +72,7 @@ function App() {
 
       setModalIsOpen(false);
     },
-    [userPlaces]
+    [userPlaces, setUserPlaces]
   );
 
   function handleError() {
@@ -103,6 +90,7 @@ function App() {
           />
         )}
       </Modal>
+
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
@@ -119,7 +107,7 @@ function App() {
         </p>
       </header>
       <main>
-        {isLoading && <p className="fallback-text">Loading...</p>}
+        {isFetching && <p className="fallback-text">Loading...</p>}
         {error && <Error title="An error ocurred!" message={error.message} />}
         <Places
           title="I'd like to visit ..."
