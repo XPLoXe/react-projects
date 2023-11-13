@@ -7,10 +7,7 @@ export default function Meals() {
     async function fetchMeals() {
       const response = await fetch("../../backend/data/available-meals.json");
 
-      console.log(response);
-
       const meals = await response.json();
-      console.log(meals);
       setLoadedMeals(meals);
     }
 
