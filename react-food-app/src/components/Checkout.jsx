@@ -26,7 +26,6 @@ export default function Checkout() {
     const fd = new FormData(event.target);
     const customerData = Object.fromEntries(fd.entries()); // { email: test@example.com }
 
-    console.log(customerData);
     fetch("http://localhost:3000/orders", {
       method: "POST",
       headers: {
