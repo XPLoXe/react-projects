@@ -5,7 +5,7 @@ export const fetchCartData = () => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await fetch(
-        "https://react-course-ced01-default-rtdb.europe-west1.firebasedatabase.app/"
+        "https://react-course-ced01-default-rtdb.europe-west1.firebasedatabase.app/cart.json"
       );
 
       if (!response.ok) {
@@ -49,7 +49,7 @@ export const sendCartData = (cart) => {
 
     const sendRequest = async () => {
       const response = await fetch(
-        "https://react-course-ced01-default-rtdb.europe-west1.firebasedatabase.app/",
+        "https://react-course-ced01-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
         {
           method: "PUT",
           body: JSON.stringify({
